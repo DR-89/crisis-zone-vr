@@ -17,6 +17,22 @@ This is an unofficial single-player arcade port. See [release notes](docs/RELEAS
 
 The Windows runtime must support OpenGL. Quest Link/Virtual Desktop/SteamVR compatibility and headset performance must be checked with this build; results from the earlier ports are not Crisis Zone results.
 
+### Sideload on Quest from a Windows PC
+
+1. Enable **Developer Mode** for your headset in the Meta Horizon phone app under **Headset Settings**. First-time setup requires a verified Meta developer account/team; follow [Meta's setup guide](https://developers.meta.com/vr/documentation/native/android/mobile-device-setup/) for this and the Windows ADB driver.
+2. Download `CrisisZoneVR-v0.1.4-quest3.apk` from the [release page](https://github.com/DR-89/crisis-zone-vr/releases/tag/v0.1.4).
+3. Download and extract [Android SDK Platform-Tools for Windows](https://developer.android.com/tools/releases/platform-tools), then copy the APK into its `platform-tools` folder.
+4. Connect the Quest with a **USB data cable**, put on the headset and accept **Allow USB debugging** for your PC.
+5. Open PowerShell in the `platform-tools` folder and run:
+
+   ```powershell
+   .\adb.exe install -r .\CrisisZoneVR-v0.1.4-quest3.apk
+   ```
+
+6. After `Success`, open the headset's app library, select **Unknown sources**, and launch **Crisis Zone VR (Test)**. The first launch extracts the bundled game content.
+
+For updates, install the new APK over the existing app with the same command. The `-r` option keeps your settings and game data; no uninstall is needed.
+
 ## Controls and options
 
 The default hand controls the face-button mapping. Either trigger transfers the weapon to that hand. Hold the trigger for machine-gun fire; hold either grip to leave cover and release both to hide/reload. Press **A** (or **X** with left-handed layout) for credits and the trigger to start.
