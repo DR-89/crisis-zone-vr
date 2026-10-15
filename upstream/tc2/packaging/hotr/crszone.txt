@@ -1,0 +1,14 @@
+Players
+1
+P1
+[States]
+:mame_start
+*All
+>Open_COM
+:mame_stop
+*All
+>Close_COM
+[Signals]
+:gun_recoil
+*P1
+>Recoil_R2S

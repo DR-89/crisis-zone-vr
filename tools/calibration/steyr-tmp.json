@@ -1,0 +1,18 @@
+{
+  "source_sha256": "21f0fc4754d81ee7b15a6879ecbb3ac40b4981e85b64998cfda0e9f297779915",
+  "task_id": "b1d7e6bf-abdc-4c08-9573-2a4a52f9c05f",
+  "calibration": {
+    "source_forward": [-1, 0, 0],
+    "source_up": [0, 1, 0],
+    "source_muzzle": [-0.4901, 0.7011, -0.00815],
+    "source_grip": [0.15, 0.46, 0],
+    "length_m": 0.282,
+    "grip_z_m": 0.025
+  },
+  "reference": {
+    "page": "https://commons.wikimedia.org/wiki/File:Steyr_TMP_9mmPara_001.jpg",
+    "author": "Spectrums; image revision by Luk",
+    "license": "Public domain",
+    "note": "External visual reference for a game prop only. Muzzle centre inspected across the front cylinder; grip and size are VR visual calibration."
+  }
+}

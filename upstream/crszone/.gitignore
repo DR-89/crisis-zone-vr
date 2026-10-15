@@ -1,0 +1,24 @@
+# Game files are yours and never belong in git.
+/extracted/
+/roms/
+*.zip
+# Made by the build or the game.
+/build/
+/build-win/
+/windows-release/
+/boot.bin
+/prog.bin
+/user1.bin
+/sub.bin
+/io.bin
+/gen/csz_sub.c
+/gen/csz_io.c
+/crszone.cfg
+/tc2.log
+/crszone_backup.nv
+/crszone_backup.nv.tmp
+/crszone_last.rec
+/crszone_prev.rec
+/screenshots/
+/crosshairs/
+__pycache__/

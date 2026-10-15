@@ -1,0 +1,40 @@
+{
+  "model": "Lowpoly Pistol",
+  "author": "FireWarden",
+  "license": "CC0",
+  "source": "QuestRetroDepth app/src/main/cpp/lightgun_model.h",
+  "original_url": "https://opengameart.org/content/lowpoly-pistol",
+  "source_sha256": "7d6cab862a8b9b9fe91c84d0368445bdfe96813ebdc66ba02ca7ac4949df02cf",
+  "asset_sha256": "26c4939d4ea21a593a0951ef23a7d9294f6f3f641c5e5fc19886fb0a4c15f403",
+  "format": "TCGUN002",
+  "vertices": 3216,
+  "triangles": 1072,
+  "parts": {
+    "0": "body",
+    "1": "trigger",
+    "2": "slide and sights"
+  },
+  "source_barrel_center_xy": [
+    6.550000000021816e-08,
+    0.0722139
+  ],
+  "muzzle_m": [
+    0,
+    0,
+    -0.150763
+  ],
+  "slide_travel_m": 0.034,
+  "recoil_duration_ms": 150,
+  "bounds_m": [
+    [
+      -0.0153559855,
+      -0.13184659999999998,
+      -0.150763
+    ],
+    [
+      0.0153558445,
+      0.018691,
+      0.06602619
+    ]
+  ]
+}
