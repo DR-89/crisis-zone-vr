@@ -52,7 +52,9 @@ def package(assets):
         manifest=[line for line in (assets/'roms.sha256').read_text().splitlines() if line.split('  ',1)[1]!='c71.bin']
         assert len(manifest)==23
         (public/'roms.sha256').write_text('\n'.join(manifest)+'\n',encoding='ascii')
-        run([bt/'aapt2.exe','link','--manifest',package_manifest(args.bundle_roms),'-I',android,'-A',public,'-o',base])
+        resources=BUILD/'launcher-res.zip'
+        run([bt/'aapt2.exe','compile','--dir',ROOT/'quest/res','-o',resources])
+        run([bt/'aapt2.exe','link','--manifest',package_manifest(args.bundle_roms),'-I',android,'-A',public,resources,'-o',base])
     strip=ROOT/'.tools/android-sdk/ndk/29.0.14206865/toolchains/llvm/prebuilt/windows-x86_64/bin/llvm-strip.exe'
     libs=BUILD/'package-libs';libs.mkdir(exist_ok=True)
     for name,source in [('libmain.so',BUILD/'native/libmain.so'),('libSDL2.so',BUILD/'native/sdl/libSDL2.so'),('libopenxr_loader.so',ROOT/'.tools/openxr/prefab/modules/openxr_loader/libs/android.arm64-v8a/libopenxr_loader.so')]:
