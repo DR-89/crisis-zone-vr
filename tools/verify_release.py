@@ -26,16 +26,23 @@ def verify_apk(apk):
             elf=z.read(name);assert elf[:5]==b'\x7fELF\x02' and struct.unpack_from('<H',elf,18)[0]==183
         assert z.read('classes.dex')[:4]==b'dex\n'
         assert b'Crisis Zone' in z.read('assets/licenses/NOTICE.md')
+        assert 'resources.arsc' in z.namelist()
+        assert 'res/mipmap-anydpi-v26/ic_launcher.xml' in z.namelist()
+        for density in ('mdpi','hdpi','xhdpi','xxhdpi','xxxhdpi'):
+            assert z.read('res/mipmap-'+density+'-v4/ic_launcher.png').startswith(b'\x89PNG\r\n\x1a\n')
+        assert z.read('res/drawable-nodpi-v4/launcher_banner.png').startswith(b'\x89PNG\r\n\x1a\n')
     aapt=ROOT/'.tools/android-sdk/build-tools/35.0.0/aapt.exe'
     badging=subprocess.check_output([str(aapt),'dump','badging',str(apk)],text=True)
     source=ET.parse(ROOT/'quest/AndroidManifest.xml').getroot();ns='{http://schemas.android.com/apk/res/android}'
     assert f"package: name='org.crisiszone.vr' versionCode='{source.get(ns+'versionCode')}' versionName='{source.get(ns+'versionName')}'" in badging
     assert "launchable-activity: name='org.crisiszone.vr.MainActivity'" in badging
+    assert "icon='res/mipmap-anydpi-v26/ic_launcher.xml'" in badging
     tree=subprocess.check_output([str(aapt),'dump','xmltree',str(apk),'AndroidManifest.xml'],text=True)
     assert 'LauncherActivity' not in tree
     assert 'org.khronos.openxr.intent.category.IMMERSIVE_HMD' in tree
     assert 'com.oculus.intent.category.VR' in tree
     assert 'android.permission.INTERNET' not in tree
+    assert tree.count('android:icon(')==2 and 'android:roundIcon(' in tree
     return {'apk':apk.name,'bytes':apk.stat().st_size,'sha256':sha(apk.read_bytes()),'chips_verified':23,'bundled':True,'importer':False,'abi':'arm64-v8a'}
 def verify_windows(archive):
     audit=json.loads((ROOT/'build/rom-audit.json').read_text())

@@ -1,4 +1,37 @@
-# Crisis Zone VR 0.1.4 validation
+# Crisis Zone VR validation
+
+## 0.1.7 resolution presets, filtering and launcher artwork — 20 October 2026
+
+- All six saved resolution presets, old/malformed settings, controller page navigation and release guards, and 38 GLES menu previews pass. Runtime/GPU width and height limits fall back to the previous default size. Filtering defaults ON and toggles immediately with the physical left grip while paused.
+- Quest 3 startup confirmed actual 1680 x 1760 and 3360 x 3520 eye buffers. The installed APK hash matches the signed build; temporary test settings were restored exactly.
+- The new Windows release ZIP passes internal hash/content checks and a clean-extraction desktop smoke test through 3,601 simulation frames, with normal shutdown, zero CPU traps/FP exceptions, and no GL errors. Frame 3,600 shows the textured attract scene and HUD; the sparse intro transition at frame 1,500 is not used as a world-render check.
+- Headset performance at each resolution and a fresh Windows headset session remain unverified. Previous game-specific fixes and limitations below remain applicable.
+
+## 0.1.5 texture filtering and launcher artwork — 17 October 2026
+
+- Android ARM64 and Windows x64 builds pass. Palette-aware bilinear sampling is
+  enabled for world polygons. All 16 packed colour modes and eight tile
+  flip/transpose combinations pass 256 real GLES colour-average comparisons,
+  including tile boundaries. Transparent-pen interpolation, 50% blending and
+  stencil/overlay exclusions pass. A controlled sub-texel motion test reduces
+  the largest per-channel step from 180 to 6 (8-bit values); this is a synthetic
+  continuity check, not a headset shimmer or performance measurement.
+- Production GLES captures of menu frame 1800 and gameplay frames 2400/2820
+  compile and draw without errors on ANGLE. The menu is byte-identical with
+  filtering on/off. Gameplay with filtering off matches the previous renderer
+  byte-for-byte. Filtered gameplay was visually inspected.
+- The packaged Windows application completed a hidden desktop smoke test of
+  3,000 frames with the production OpenGL renderer: normal shutdown, zero CPU
+  traps and zero FP exceptions. This verifies the desktop shader path, not PCVR.
+- APKs include five opaque legacy icon sizes, a safe-area adaptive icon and a
+  banner, referenced by both the application and launcher activity. The APK
+  signature/alignment and ROM/model integrity checks remain in place.
+- Quest/Adreno performance and the actual QGO launcher display are unverified:
+  no headset was available over ADB during these checks. Bilinear filtering
+  reduces abrupt texel changes but is not mipmapping; distant aliasing remains
+  possible. This is a local test build, not a published release.
+
+## Previous published release
 
 Release 0.1.4, 15 October 2026. These results describe Crisis Zone, not the earlier Time Crisis ports. The Quest user has confirmed that the current port plays well; the automated and device checks below record the scope of validation.
 
