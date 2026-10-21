@@ -110,9 +110,9 @@ static void panel(const QOptions *options,int page,int boot_side,bool saved){
     text(24,378,options->texture_filtering?"TEXTURE FILTERING: ON":"TEXTURE FILTERING: OFF",255,202,110);text(448,378,"LEFT GRIP",181,207,220);
     text(24,402,options->enhanced?"ENHANCED: ON":"ENHANCED: OFF",options->enhanced?255:181,options->enhanced?202:207,options->enhanced?110:220);
     text(24,426,options->machine_gun?"WEAPON: MACHINE GUN":"WEAPON: PISTOL",options->machine_gun?255:181,options->machine_gun?202:207,options->machine_gun?110:220);
-    text(24,402,left_handed?"A RIGHT: RECENTER / CALIBRATE":"X LEFT: RECENTER / CALIBRATE",181,207,220);
-    text(24,426,"LEFT UP/DOWN: CHANGE PAGE",181,207,220);
-    text(24,454,saved?"LEFT MENU: RESUME":"SAVING FAILED",saved?170:255,saved?193:150,saved?206:150);
+    text(24,450,left_handed?"A RIGHT: RECENTER / CALIBRATE":"X LEFT: RECENTER / CALIBRATE",181,207,220);
+    text(24,474,"LEFT UP/DOWN: CHANGE PAGE",181,207,220);
+    text(24,498,saved?"LEFT MENU: RESUME":"SAVING FAILED",saved?170:255,saved?193:150,saved?206:150);
 }
 static GLuint shader(GLenum type,const char *source){
     GLuint s=glCreateShader(type);qgpu_shader_source(s,source);glCompileShader(s);GLint ok;glGetShaderiv(s,GL_COMPILE_STATUS,&ok);
@@ -140,5 +140,15 @@ void qui_draw(const float view[16],const float projection[16],V3 head,Q4 rotatio
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);last_state=state;
     }
-    /* remaining draw code omitted for brevity in this push -- full file should be used */
+    float dist=1.15f;V3 pos=add(head,rotate(rotation,v3(0,0,-dist)));
+    float model[16]={1,0,0,0, 0,1,0,0, 0,0,1,0, pos.x,pos.y,pos.z,1};
+    glUseProgram(program);glUniformMatrix4fv(u_view,1,GL_FALSE,view);glUniformMatrix4fv(u_projection,1,GL_FALSE,projection);glUniform1i(u_texture,0);
+    glBindVertexArray(vao);glBindBuffer(GL_ARRAY_BUFFER,vbo);
+    float w=0.62f,h=0.46f;float verts[]={-w,-h,0,0,1, w,-h,0,1,1, w,h,0,1,0, -w,-h,0,0,1, w,h,0,1,0, -w,h,0,0,0};
+    glBufferData(GL_ARRAY_BUFFER,sizeof verts,verts,GL_DYNAMIC_DRAW);
+    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,20,(void*)0);glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,20,(void*)12);glEnableVertexAttribArray(1);
+    glEnable(GL_BLEND);glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    glDrawArrays(GL_TRIANGLES,0,6);glDisable(GL_BLEND);glBindTexture(GL_TEXTURE_2D,bound);glActiveTexture(unit);
 }
+void qui_shutdown(void){glDeleteProgram(program);glDeleteVertexArrays(1,&vao);glDeleteBuffers(1,&vbo);glDeleteTextures(1,&texture);program=vao=vbo=texture=0;last_state=-1;}
