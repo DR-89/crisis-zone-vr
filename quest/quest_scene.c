@@ -91,7 +91,6 @@ void qvr_sprites_prepare(const sprite_item *items,int n){
     bool diagnostic=getenv("TCVR_GEOMETRY_DIAGNOSTICS")!=NULL;
     if(diagnostic){
         fprintf(stderr,"[GEOMETRY] frame %u; cameras %u; main %.6f %.3f %.3f; farthest %.1f m; triangles %u\n",frame_number,camera_count,flat_camera.focal,flat_camera.cx,flat_camera.cy,farthest,count);
-        for(unsigned i=0;i<camera_count;i++)fprintf(stderr,"[CAMERA] %.6f %.3f %.3f weight %u\n",cameras[i].camera.focal,cameras[i].camera.cx,cameras[i].camera.cy,cameras[i].weight);
     }
     sprite_count=n<0?0:n>1024?1024:n;bool grid_ready=false;
     for(int i=0;i<sprite_count;i++){
@@ -128,5 +127,8 @@ bool qvr_aim(V3 o,V3 d,float *nx,float *ny,V3 *hit){
     }
     *nx=(camera.cx+camera.focal*hit->x/-hit->z)/640;
     *ny=(camera.cy-camera.focal*hit->y/-hit->z)/480;
-    return *nx>0&&*nx<1&&*ny>0&&*ny<1;
+    /* Edge clamp: far left/right VR aims still register near the playable edge */
+    *nx=fmaxf(0.001f,fminf(0.999f,*nx));
+    *ny=fmaxf(0.001f,fminf(0.999f,*ny));
+    return true;
 }
